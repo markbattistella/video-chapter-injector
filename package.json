@@ -1,0 +1,21 @@
+{
+  "name": "opp-inject-chapters",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "NODE_ENV=production electron .",
+    "start:dev": "NODE_ENV=development electron .",
+    "package": "electron-packager . --platform=win32 --arch=x64 --out=dist --overwrite"
+  },
+  "author": "Mark Battistella",
+  "dependencies": {
+    "electron": "^29.1.4",
+    "ffmpeg-static": "^5.2.0",
+    "ffprobe-static": "^3.1.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^17.1.2",
+    "electron-reloader": "^1.2.3"
+  }
+}
