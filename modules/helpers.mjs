@@ -55,6 +55,19 @@ async function getFileDuration(file) {
   }
 }
 
+async function mergeChatpersIntoFile(pathToFile, pathToChapters) {
+  try {
+    const file = pathToFile[0].path;
+    const newVideoFilePath = await window.api.appendToFileName(file, '_withChapters');
+      const args = ['-i', file, '-i', pathToChapters, '-map_metadata', '1', '-codec', 'copy', newVideoFilePath, '-y'];
+    const output = await window.api.ffmpeg(args);
+    return output;
+  } catch (error) {
+    console.error('Error running ffmpeg:', error);
+    throw error;
+  }     
+}
+
 async function getInputFileData(file) {
   const [inputFileDuration, inputFileFrameRate] = await Promise.all([getFileDuration(file), getFramesPerSecond(file)]);
   return { duration: inputFileDuration, fps: inputFileFrameRate };
@@ -69,9 +82,45 @@ function getChapterData(input) {
   return parseCsvData(input).map(([timecode, , , comment]) => ({ timecode, comment }));
 }
 
+function startCountdown(duration, onComplete) {
+  let remaining = duration;
+  const countdown = () => {
+      console.log(remaining);
+      remaining -= 1;
+      if (remaining >= 0) {
+          setTimeout(countdown, 1000);
+      } else {
+          onComplete();
+      }
+  };
+  countdown();
+}
+
+async function createChapterData(chapters, fileData) {
+  var chaptersContent = ";FFMETADATA1\n"
+  for (let i = 0; i < chapters.length; i++) {
+    const startChapterInMS = await convertTimeToMs(chapters[i].timecode, fileData.fps);
+    let endChapterInMS = fileData.duration;
+    const nextChapterIndex = i + 1;
+    if (nextChapterIndex < chapters.length) {
+      const nextChapter = chapters[nextChapterIndex];
+      endChapterInMS = await convertTimeToMs(nextChapter.timecode, fileData.fps) - 1;
+    }
+    chaptersContent += '[CHAPTER]\n';
+    chaptersContent += 'TIMEBASE=1/1000\n';
+    chaptersContent += `START=${startChapterInMS}\n`
+    chaptersContent += `END=${endChapterInMS}\n`
+    chaptersContent += `title=${chapters[i].comment}\n\n`
+  }
+  return chaptersContent;
+}
+
 export {
   isValidCSV,
   convertTimeToMs,
   getInputFileData,
-  getChapterData
+  getChapterData,
+  startCountdown,
+  mergeChatpersIntoFile,
+  createChapterData
 };

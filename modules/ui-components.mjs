@@ -1,13 +1,13 @@
 // Constants: internal
 const body = document.querySelector('body');
 
-export const textareaCSV = createTextarea();
-export const buttonPaste = createButton('Paste from clipboard', ['button', 'pale']);
-export const buttonReset = createButton('Reset', ['button', 'red']);
-export const buttonInfo = createButton('Help', []);
-export const inputSelectFile = createInputFile();
-export const buttonSubmit = createButton('Inject chapters', ['button', 'blue'], true);
-export const divPopOverlay = document.createElement('div');
+const textareaCSV = createTextarea();
+const buttonPaste = createButton('Paste from clipboard', ['button', 'pale']);
+const buttonReset = createButton('Reset', ['button', 'red']);
+const buttonInfo = createButton('Help', []);
+const inputSelectFile = createInputFile();
+const buttonSubmit = createButton('Inject chapters', ['button', 'blue'], true);
+const divPopOverlay = document.createElement('div');
 
 function createButton(text, classes = [], disabled = false) {
   const button = document.createElement('a');
@@ -65,7 +65,6 @@ function createDivWithChildren(
   div.id = id;
   div.classList.add(...classes.split(' '));
   if (additionalClass && additionalChildren.length > 0) {
-    // Create an additional div for specific children
     const additionalDiv = document.createElement('div');
     additionalDiv.classList.add(additionalClass);
     additionalChildren.forEach(child => additionalDiv.appendChild(child));
@@ -103,7 +102,7 @@ const buildPopover = () => {
   video.setAttribute('autoplay', 'true');
   video.setAttribute('loop', 'true');
   const source = document.createElement('source');
-  source.setAttribute('src', 'info.mp4');
+  source.setAttribute('src', 'instructions.mp4');
   source.setAttribute('type', 'video/mp4');
   video.appendChild(source);
   const infoContainer = createInfoContainer();
@@ -115,37 +114,33 @@ const buildPopover = () => {
 
 const createInfoContainer = () => {
   const infoContainer = document.createElement('div');
-  const h1 = document.createElement('h1');
-  h1.textContent = 'Video Chapter Injector';
-  const hr1 = document.createElement('hr');
-  const h2 = document.createElement('h2');
-  h2.textContent = 'USAGE';
-  const ol = document.createElement('ol');
-  const li1 = document.createElement('li');
-  li1.textContent = 'Select a file (MP4 or MOV files)';
-  const li2 = document.createElement('li');
-  li2.textContent = 'Copy the Markers list from Avid MC';
-  const li3 = document.createElement('li');
-  li3.textContent = 'Press "Inject Chapters"';
-  ol.appendChild(li1);
-  ol.appendChild(li2);
-  ol.appendChild(li3);
-  const hr2 = document.createElement('hr');
-  const blockquote = document.createElement('blockquote');
-  blockquote.textContent = 'Note: Chapter points must be in the following format';
-  const pre = document.createElement('pre');
-  pre.textContent = 'HH:MM:SS:FF\tT#\tColor\tName';
 
+  const h2_1 = document.createElement('h2');
+  const h2_2 = document.createElement('h2');
+  const hr = document.createElement('hr');
+  const ol = document.createElement('ol');
+  const li_1 = document.createElement('li');
+  const li_2 = document.createElement('li');
+  const li_3 = document.createElement('li');
   const p = document.createElement('p');
-  p.innerHTML = 'Where the timecode (<kbd>HH:MM:SS:FF</kbd>), track number (<kbd>T#</kbd>), marker colour (<kbd>Color</kbd>), and chapter name (<kbd>Name</kbd>) are all separated by <u>one</u> tab character';
   const button = createButton('Done', ['button', 'full-width']);
-  infoContainer.appendChild(h1);
-  infoContainer.appendChild(hr1);
-  infoContainer.appendChild(h2);
+
+  h2_1.textContent = 'How to use';
+  li_1.textContent = 'Select an MP4 or MOV video file';
+  li_2.textContent = 'Copy the Markers list from Avid Media Composer, any NLE, or CSV data';
+  li_3.textContent = 'Inject Chapters';
+  h2_2.textContent = 'How to format your chapters';
+  p.innerHTML = 'The chapter text field expects CSV data. If you copy the markers list from Avid Media Composer this is already formatted in tab separated values.<br>The important parts of the field are that the first column is in the format <kbd>HH:MM:SS:FF</kbd>, and the last column is the chapter title name. Any columns between those will be ignored in the injection.<br>Some example formats for the chapter CSV data can be:<pre>HH:MM:SS:FF\tChapter title  // tab spaces</pre><pre>HH:MM:SS:FF,Chapter title    // commas</pre><pre>HH:MM:SS:FF|Chapter title    // pipes</pre>';
+
+  ol.appendChild(li_1);
+  ol.appendChild(li_2);
+  ol.appendChild(li_3);
+
+  infoContainer.appendChild(hr);
+  infoContainer.appendChild(h2_1);
   infoContainer.appendChild(ol);
-  infoContainer.appendChild(hr2);
-  infoContainer.appendChild(blockquote);
-  blockquote.appendChild(pre);
+  infoContainer.appendChild(hr);
+  infoContainer.appendChild(h2_2);
   infoContainer.appendChild(p);
   infoContainer.appendChild(button);
   button.addEventListener('click', hidePopover);
@@ -168,15 +163,29 @@ const hidePopover = () => {
   video.pause();
 };
 
-export const buildUI = () => {
+const buildUI = () => {
   const formElement = createFormElement();
   body.appendChild(formElement);
   buildPopover(); // Initialize popover as part of UI setup
 };
 
-export const showPanel = () => {
+const showPanel = () => {
   divPopOverlay.classList.remove('hidden');
   const video = document.querySelector('video');
   video.currentTime = 0;
   video.play();
+};
+
+
+
+export {
+  textareaCSV,
+  buttonPaste,
+  buttonReset,
+  buttonInfo,
+  inputSelectFile,
+  buttonSubmit,
+  divPopOverlay,
+  buildUI,
+  showPanel
 };

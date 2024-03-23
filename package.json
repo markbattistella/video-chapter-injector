@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production electron .",
     "start:dev": "NODE_ENV=development electron .",

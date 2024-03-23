@@ -341,8 +341,8 @@ ol.normal, ul.normal {
 
 hr, pre {
   position: relative;
-  margin: 1em 0;
-  display:block
+  margin: 0.8em 0;
+  display: block;
 }
 
 hr {
@@ -516,7 +516,7 @@ optgroup {
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
-  font-weight: bolder;
+  font-weight: bold;
   line-height: 1;
   margin: 0 0 0.4em;
   padding: 0;
@@ -621,48 +621,34 @@ footer a {
 }
 
 .popover {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  overflow: scroll;
   background-color: hsla(var(--colour-mono), 0%, 0.9);
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 1em;
   padding: 1em;
-  font-weight: bold;
+
+  scroll-snap-type: y mandatory;
+}
+
+.popover > div {
+  scroll-snap-align: start;
+  height: 100vh;
+  padding: 1em;
 }
 
 .popover pre {
   tab-size: 7;
 }
 .popover p {
+  font-size: 95%;
   margin-bottom: 0.7em;
-}
-
-.popover blockquote {
-  font-family: var(--font-sans);
-  font-size: 0.9em;
-  border-radius: var(--size-radius);
-  text-indent: 0;
-  padding: 0.3em 1em;
-  line-height: 1.6;
-  margin: 0;
-  background-color: hsla(var(--colour-red), 80%, 0.2);
-  border-width: 1px 1px 1px 1em;
-  border-style: solid;
-  border-color: 
-    hsla(var(--colour-red), 30%, 0.7)
-    hsla(var(--colour-red), 30%, 0.7) 
-    hsla(var(--colour-red), 30%, 0.7)
-    hsl(var(--colour-red), 50%);
-}
-
-.popover .video-container {
-  border-radius: calc( var(--size-radius) * 2);
-  overflow: hidden;
 }
 
 .popover .video-container video {
@@ -671,7 +657,7 @@ footer a {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 

@@ -15,7 +15,6 @@ function executeFile(filePath, args) {
       }
       if (stderr) {
         console.warn(`Warning: ${stderr}`);
-        return;
       }
       resolve(stdout);
     });

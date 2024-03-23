@@ -66,6 +66,8 @@ ipcMain.on('open-url', (event, url) => {
 // Attempt to enable live reload during development.
 if (isDev) {
   try {
-    require('electron-reloader')(module)
+    require('electron-reloader')(module, {
+      ignore: ['_test/**']
+    });
   } catch (_) {}
 }
