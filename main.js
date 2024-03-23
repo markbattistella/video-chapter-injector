@@ -7,7 +7,7 @@
  */
 
 // Electron modules and Node.js path module are required for Electron app functionality and file path operations.
-const { app, BrowserWindow, ipcMain, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, shell, Menu } = require("electron");
 const path = require("path");
 const isDev = process.env.NODE_ENV === "development";
 
@@ -35,6 +35,9 @@ function createWindow() {
     },
   });
 
+  // Hide the menu bar
+  mainWindow.setMenu(null);
+
   // Load the HTML file for the window.
   mainWindow.loadFile("data/index.html");
 
@@ -54,6 +57,37 @@ app.whenReady().then(createWindow);
 app.on("window-all-closed", () => {
   app.quit();
 });
+
+
+const isMac = process.platform === 'darwin'
+const template = [
+  ...(isMac ?
+
+    [{
+      role: 'help',
+      title: 'dd',
+      submenu: [
+        {
+          label: 'Source code',
+          click: async () => {
+            await shell.openExternal('https://github.com/markbattistella/video-chapter-injector')
+          }
+        },
+        {
+          label: 'Author Website',
+          click: async () => {
+            await shell.openExternal('https://markbattistella.com')
+          }
+        }
+      ]
+    }]
+: []  
+  )
+];
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
+
+
 
 /**
  * Listens for 'open-url' messages from the renderer process to open URLs in the default web browser.

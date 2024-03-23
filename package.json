@@ -1,22 +1,42 @@
 {
-  "name": "opp-inject-chapters",
+  "name": "video-chapter-injector",
   "version": "1.0.0",
-  "description": "",
+  "description": "An app which quickly allows you to inject non-linear video editor markers into video files as chapter points.",
   "main": "main.js",
   "license": "MIT",
+  "productName": "Video Chapter Injector",
+  "categories": ["Other"],
+  "contributors": ["Mark Battistella"],
+  "icon": "./data/icons/app-icon.png",
+  "os": ["Windows", "macOS"],
   "scripts": {
-    "start": "NODE_ENV=production electron .",
+    "start": "electron-forge start",
+    "start:prod": "NODE_ENV=production electron .",
     "start:dev": "NODE_ENV=development electron .",
-    "package": "electron-packager . --platform=win32 --arch=x64 --out=dist --overwrite"
+    "package": "electron-forge package",
+
+    "make": "electron-forge make",
+    "make:win32": "electron-forge make --platform=win32",
+    "make:mac": "electron-forge make --platform=darwin",
+    "make:deb": "electron-forge make --platform=linux"
   },
   "author": "Mark Battistella",
   "dependencies": {
-    "electron": "^29.1.4",
+    "electron-squirrel-startup": "^1.0.0",
     "ffmpeg-static": "^5.2.0",
     "ffprobe-static": "^3.1.0"
   },
   "devDependencies": {
-    "electron-packager": "^17.1.2",
+    "@electron-forge/cli": "^7.3.1",
+    "@electron-forge/maker-deb": "^7.3.1",
+    "@electron-forge/maker-dmg": "^7.3.1",
+    "@electron-forge/maker-rpm": "^7.3.1",
+    "@electron-forge/maker-squirrel": "^7.3.1",
+    "@electron-forge/maker-zip": "^7.3.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
+    "@electron-forge/plugin-fuses": "^7.3.1",
+    "electron": "^29.1.4",
+    "electron-builder": "^24.13.3",
     "electron-reloader": "^1.2.3"
   }
 }
