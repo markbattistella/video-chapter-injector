@@ -1,42 +1,37 @@
 {
   "name": "video-chapter-injector",
   "version": "1.0.0",
+  "copyright": "Copyright © 2024 Mark Battistella",
   "description": "An app which quickly allows you to inject non-linear video editor markers into video files as chapter points.",
   "main": "main.js",
   "license": "MIT",
   "productName": "Video Chapter Injector",
-  "categories": ["Other"],
-  "contributors": ["Mark Battistella"],
-  "icon": "./data/icons/app-icon.png",
-  "os": ["Windows", "macOS"],
+  "categories": [
+    "Other"
+  ],
+  "contributors": [
+    "Mark Battistella"
+  ],
   "scripts": {
     "start": "electron-forge start",
     "start:prod": "NODE_ENV=production electron .",
     "start:dev": "NODE_ENV=development electron .",
-    "package": "electron-forge package",
-
-    "make": "electron-forge make",
-    "make:win32": "electron-forge make --platform=win32",
-    "make:mac": "electron-forge make --platform=darwin",
-    "make:deb": "electron-forge make --platform=linux"
+    "package:win32": "electron-packager . --platform=win32  --arch=ia32 --out=dist/ --icon=./data/icons/app-icon.ico --overwrite",
+    "package:win64": "electron-packager . --platform=win32  --arch=x64  --out=dist/ --icon=./data/icons/app-icon.ico --overwrite",
+    "package:mac":   "electron-packager . --platform=darwin --arch=x64  --out=dist/ --icon=./data/icons/app-icon.icns --overwrite",
+    "package:linux": "electron-packager . --platform=linux  --arch=x64  --out=dist/ --icon=./data/icons/app-icon.png --overwrite"
   },
   "author": "Mark Battistella",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
     "ffmpeg-static": "^5.2.0",
     "ffprobe-static": "^3.1.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.3.1",
-    "@electron-forge/maker-deb": "^7.3.1",
-    "@electron-forge/maker-dmg": "^7.3.1",
-    "@electron-forge/maker-rpm": "^7.3.1",
-    "@electron-forge/maker-squirrel": "^7.3.1",
-    "@electron-forge/maker-zip": "^7.3.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
-    "@electron-forge/plugin-fuses": "^7.3.1",
     "electron": "^29.1.4",
-    "electron-builder": "^24.13.3",
     "electron-reloader": "^1.2.3"
+  },
+  "build": {
+    "appId": "com.markbattistella.video-chapter-injector",
+    "productName": "Video Chapter Injector"
   }
 }
